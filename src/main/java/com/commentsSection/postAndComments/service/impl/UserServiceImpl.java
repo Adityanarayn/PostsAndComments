@@ -36,25 +36,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-//    public List<PostWithCommentsDTO> getAllPostsForUserService(Long userId) {
-//        Optional<User> userOptional = userRepo.findById(userId);
-//        if (userOptional.isEmpty()) {
-//            return Collections.emptyList(); // Return an empty list if user is not found
-//        }
-//
-//        User user = userOptional.get();
-//        List<Post> posts = postRepo.findByUser(user);
-//        List<PostWithCommentsDTO> postWithComments = new ArrayList<>();
-//
-//        for (Post post : posts) {
-//            List<Comment> commentList = commentRepo.findByPost(post);   // having the problem here itself
-//            PostWithCommentsDTO postWithCommentsDTO = new PostWithCommentsDTO(post, commentList);
-//            postWithComments.add(postWithCommentsDTO);
-//        }
-//
-//        return postWithComments;
-//    }
-
     public List<PostWithCommentsDTO> getAllPostsForUserService(Long userId) {
         Optional<User> userOptional = userRepo.findById(userId);
         if (userOptional.isEmpty()) {
@@ -66,12 +47,32 @@ public class UserServiceImpl implements UserService {
         List<PostWithCommentsDTO> postWithComments = new ArrayList<>();
 
         for (Post post : posts) {
-            PostWithCommentsDTO postDTO = new PostWithCommentsDTO(post);
-            postWithComments.add(postDTO);
+            List<Comment> commentList = commentRepo.findByPost(post);   // having the problem here itself
+            post.setComments(commentList);
+            PostWithCommentsDTO postWithCommentsDTO = new PostWithCommentsDTO(post);
+            postWithComments.add(postWithCommentsDTO);
         }
 
         return postWithComments;
     }
+
+//    public List<PostWithCommentsDTO> getAllPostsForUserService(Long userId) {
+//        Optional<User> userOptional = userRepo.findById(userId);
+//        if (userOptional.isEmpty()) {
+//            return Collections.emptyList(); // Return an empty list if user is not found
+//        }
+//
+//        User user = userOptional.get();
+//        List<Post> posts = postRepo.findByUser(user);
+//        List<PostWithCommentsDTO> postWithComments = new ArrayList<>();
+//
+//        for (Post post : posts) {
+//            PostWithCommentsDTO postDTO = new PostWithCommentsDTO(post);
+//            postWithComments.add(postDTO);
+//        }
+//
+//        return postWithComments;
+//    }
 
 
 }
